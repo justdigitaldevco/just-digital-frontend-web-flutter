@@ -1,0 +1,20 @@
+[
+  {
+    "id" : 0,
+    "title" : "Selecciona el departamento y ciudad donde se va a presentar la tutela",
+    "type_question": "dept_city",
+    "help_quote": "En qué juzgado se va a presentar la tutela",
+    "validations" : ["","","",""],
+    "depends_on": null
+  },
+  {
+    "id" : 1,
+    "title" : "¿Para quién es la tutela?",
+    "type_question": "dropdown_basic",
+    "allowed_answers" : ["Para mí","Para un familiar que no puede hacerla por sí mismo"],
+    "help_quote": "En qué juzgado se va a presentar la tutela"
+  },
+  {
+
+  }
+]
