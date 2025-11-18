@@ -13,9 +13,8 @@ class AppTheme {
     textTheme: const TextTheme(
       displayLarge: TextStyle(
         fontFamily: 'LeagueGothic',
-        fontWeight: FontWeight.w700,
-        fontSize: 24,
-        color: Colors.black,
+        fontSize: 37,
+        color: const Color(0xFF005451),
       ),
       displayMedium: TextStyle(
         fontFamily: 'LeagueGothic',

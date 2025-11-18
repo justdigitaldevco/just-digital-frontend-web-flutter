@@ -29,15 +29,15 @@ class _DocumentChoiceSliderState extends State<DocumentChoiceSlider> {
 
   final List<DocumentType> documentTypes = [
     DocumentType(
-      title: 'Legal Documents',
-      description: 'Create professional legal documents with our easy-to-use templates. Perfect for contracts, agreements, and more.',
-      buttonText: 'Create Legal Doc',
+      title: 'TUTELA DE SALUD',
+      description: 'Obten la tutela de salud. Protege y garantiza tus derechos cuando el sistema no responde',
+      buttonText: 'Generar mi tutela',
       imagePath: 'assets/images/illustrations/main_screen/img_ms_1.png',
     ),
     DocumentType(
-      title: 'Business Forms',
-      description: 'Streamline your business operations with customizable forms and templates for various business needs.',
-      buttonText: 'Business Forms',
+      title: 'SOLICITUD DE BANCARROTA',
+      description: 'Obten tu documento de solicitud de bancarrota. Protege y garantiza tus derechos cuando el sistema no responde',
+      buttonText: 'Próximamente',
       imagePath: 'assets/images/illustrations/main_screen/img_ms_1.png',
     ),
   ];
@@ -49,182 +49,186 @@ class _DocumentChoiceSliderState extends State<DocumentChoiceSlider> {
 
     return Container(
       color: Colors.white,
-      height: 600,
-      child: Stack(
+      child: Column(
         children: [
-          // 1. Grey rectangle with round corners (slightly off the right)
-          Positioned(
-            right: -screenWidth * 0.15,
-            top: 140,
-            child: Container(
-              width: screenWidth * 1,
-              height: 284,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
+          // Stack containing all the visual elements
+          Stack(
+            children: [
+              // Main content area with grey background - now adapts to content
+              Container(
+                margin: EdgeInsets.only(
+                  left: screenWidth * 0.15,
+                  top: 140,
+                  bottom: 60, // Added bottom margin to separate from indicators
                 ),
-              ),
-            ),
-          ),
-          // 2. Green rectangle (smaller, aligned with grey rectangle top)
-          Positioned(
-            right: screenWidth * 0.1,
-            top: 90,
-            child: Container(
-              width: screenWidth * 0.65,
-              height: 120,
-              decoration: BoxDecoration(
-                color: const Color(0xFF005451),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-
-          // 3. PNG image starting from lower part of green rectangle - moved up
-          Positioned(
-            right: screenWidth * 0.25,
-            top: 50, // Moved up to create overlap with green rectangle
-            child: Image.asset(
-              documentTypes[_currentPage].imagePath,
-              width: screenWidth * 0.4,
-              height: screenWidth * 0.4, // Slightly taller to accommodate the upward movement
-            ),
-          ),
-          // 4. Content slider inside the grey rectangle
-          Positioned(
-            left: 100,
-            top: 230, // Adjusted to stay inside grey rectangle
-            bottom: 40, // Added bottom constraint to stay inside
-            child: Container(
-              width: screenWidth * 0.6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // PageView for horizontal sliding content
-                  Expanded(
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: documentTypes.length,
-                      onPageChanged: (int page) {
-                        setState(() {
-                          _currentPage = page;
-                        });
-                      },
-                      itemBuilder: (context, index) {
-                        final documentType = documentTypes[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Title
-                              Text(
-                                documentType.title,
-                                style: AppTheme.lightTheme.textTheme.displayLarge?.copyWith(
-                                  fontSize: 28,
-                                ),
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // Small horizontal division line
-                              Container(
-                                width: 50,
-                                height: 2,
-                                color: AppTheme.lightTheme.primaryColor,
-                              ),
-
-                              const SizedBox(height: 16),
-
-                              // Small paragraph
-                              Expanded(
-                                child: Text(
-                                  documentType.description,
-                                  style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
-                                    fontSize: 14,
-                                    height: 1.5,
-                                  ),
-                                  maxLines: 4,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-
-                              const SizedBox(height: 24),
-
-                              // Button with text on left and icon on right
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      pageBuilder: (context, animation, secondaryAnimation) => const FormPage(),
-                                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: const Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppTheme.lightTheme.primaryColor,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 12,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      documentType.buttonText,
-                                      style: AppTheme.lightTheme.textTheme.labelLarge,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    const Icon(
-                                      Icons.arrow_forward,
-                                      size: 18,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    bottomLeft: Radius.circular(20),
                   ),
-
-                  // Page indicators
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: List.generate(
-                      documentTypes.length,
-                          (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentPage == index
-                              ? AppTheme.lightTheme.primaryColor
-                              : Colors.grey[400],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 40.0,
+                    right: 40.0,
+                    top: 90,
+                    bottom: 40, // Reduced bottom padding since container adapts
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // Allows container to adapt to content height
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // PageView for horizontal sliding content
+                      SizedBox(
+                        height: 280, // Fixed height for the PageView
+                        child: PageView.builder(
+                          controller: _pageController,
+                          itemCount: documentTypes.length,
+                          onPageChanged: (int page) {
+                            setState(() {
+                              _currentPage = page;
+                            });
+                          },
+                          itemBuilder: (context, index) {
+                            final documentType = documentTypes[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 14.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // Title
+                                  Text(
+                                      documentType.title,
+                                      style: AppTheme.lightTheme.textTheme.displayLarge
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    width: screenWidth * 0.33,
+                                    height: 2,
+                                    color: Colors.white,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  // Description and button
+                                  Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            documentType.description,
+                                            style: AppTheme.lightTheme.textTheme.bodyMedium?.copyWith(
+                                                fontSize: 18,
+                                                height: 1.4,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Roboto"
+                                            ),
+                                            maxLines: 4,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 20),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                PageRouteBuilder(
+                                                  pageBuilder: (context, animation, secondaryAnimation) => const FormPage(),
+                                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                                    return SlideTransition(
+                                                      position: Tween<Offset>(
+                                                        begin: const Offset(1.0, 0.0),
+                                                        end: Offset.zero,
+                                                      ).animate(animation),
+                                                      child: child,
+                                                    );
+                                                  },
+                                                ),
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: const Color(0xFFDD6129),
+                                              foregroundColor: Colors.white,
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 12,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(25), // Very round corners
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  documentType.buttonText,
+                                                  style: AppTheme.lightTheme.textTheme.labelLarge,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                const Icon(
+                                                  Icons.edit_note,
+                                                  size: 20,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
+              ),
+
+              // Green rectangle positioned over the grey background
+              Positioned(
+                right: screenWidth * 0.1,
+                top: 90, // Positioned above the grey rectangle
+                child: Container(
+                  width: screenWidth * 0.65,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF005451),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+
+              // PNG image positioned over both rectangles
+              Positioned(
+                right: screenWidth * 0.25,
+                top: 10, // Positioned to overlap with green rectangle
+                child: Image.asset(
+                  documentTypes[_currentPage].imagePath,
+                  width: screenWidth * 0.4,
+                  height: screenWidth * 0.4,
+                ),
+              ),
+            ],
+          ),
+
+          // Page indicators with more separation
+          Container(
+            padding: const EdgeInsets.only(bottom: 40, top: 20), // Increased top padding for more separation
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                documentTypes.length,
+                    (index) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 6), // Slightly increased horizontal margin
+                  width: 12, // Slightly larger indicators
+                  height: 12,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? AppTheme.lightTheme.primaryColor
+                        : Colors.grey[400],
+                  ),
+                ),
               ),
             ),
           ),
