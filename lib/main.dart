@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:justdigital_webapp/core/themes/app_theme.dart';
-import 'package:justdigital_webapp/core/widgets/custom_appbar.dart';
-import 'package:justdigital_webapp/core/widgets/questions_slider.dart';
-import 'package:justdigital_webapp/core/constants/questions.dart';
 import 'package:justdigital_webapp/screens/main_screen.dart';
 
 void main() {

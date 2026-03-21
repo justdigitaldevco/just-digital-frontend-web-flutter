@@ -4,8 +4,9 @@ import 'form_screen/city_selector_widget.dart';
 
 class QuestionSlider extends StatefulWidget {
   final List<Question> questions;
+  final ValueChanged<Question>? onQuestionChanged;
 
-  const QuestionSlider({Key? key, required this.questions}) : super(key: key);
+  const QuestionSlider({Key? key, required this.questions, this.onQuestionChanged}) : super(key: key);
 
   @override
   State<QuestionSlider> createState() => _QuestionSliderState();
@@ -61,6 +62,12 @@ class _QuestionSliderState extends State<QuestionSlider> {
         _cityDeptValues[i] = {'department': null, 'city': null};
       }
     }
+    // Notify with the first visible question
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_filteredQuestions.isNotEmpty) {
+        widget.onQuestionChanged?.call(_filteredQuestions[0]);
+      }
+    });
   }
 
   @override
@@ -454,6 +461,7 @@ class _QuestionSliderState extends State<QuestionSlider> {
               setState(() {
                 _currentPage = page;
               });
+              widget.onQuestionChanged?.call(_filteredQuestions[page]);
             },
             itemBuilder: (context, index) {
               return _buildQuestionContent(_filteredQuestions[index]);

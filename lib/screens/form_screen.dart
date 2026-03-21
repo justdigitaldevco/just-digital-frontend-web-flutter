@@ -5,8 +5,24 @@ import 'package:justdigital_webapp/core/widgets/questions_slider.dart';
 import '../core/widgets/custom_appbar.dart';
 import '../core/themes/app_theme.dart';
 
-class FormPage extends StatelessWidget {
+class FormPage extends StatefulWidget {
   const FormPage({super.key});
+
+  @override
+  State<FormPage> createState() => _FormPageState();
+}
+
+class _FormPageState extends State<FormPage> {
+  String _currentHelpTextLong =
+      'La tutela es útil cuando: te exigen requisitos innecesarios que retrasan tu atención.';
+
+  void _onQuestionChanged(Question question) {
+    setState(() {
+      _currentHelpTextLong = question.helpTextLong.isNotEmpty
+          ? question.helpTextLong
+          : 'La tutela es útil cuando: te exigen requisitos innecesarios que retrasan tu atención.';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +49,14 @@ class FormPage extends StatelessWidget {
               ),
             ),
           ),
-
           // Question slider
           SliverToBoxAdapter(
             child: SizedBox(
               height: 500,
-              child: QuestionSlider(questions: questionsFreeTutela),
+              child: QuestionSlider(
+                questions: questionsFreeTutela,
+                onQuestionChanged: _onQuestionChanged,
+              ),
             ),
           ),
 
@@ -49,8 +67,8 @@ class FormPage extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               margin: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(200,255, 211, 193), // Orange background
-                borderRadius: BorderRadius.circular(8), // Optional: rounded corners
+                color: const Color.fromARGB(200, 255, 211, 193),
+                borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -66,10 +84,8 @@ class FormPage extends StatelessWidget {
                           margin: EdgeInsets.only(right: 8),
                         ),
                       ),
-                      // Replace with your actual PNG icon
-                      // For now using an Icon, replace with Image.asset() for your PNG
                       Icon(
-                        Icons.medical_services, // Replace with your actual icon
+                        Icons.medical_services,
                         color: Colors.white,
                         size: 24,
                       ),
@@ -83,13 +99,13 @@ class FormPage extends StatelessWidget {
                     ],
                   ),
 
-                  SizedBox(height: 16), // Spacing between icon and text
+                  SizedBox(height: 16),
 
-                  // Paragraph text
-                  const Text(
-                    'La tutela es útil cuando: te exigen requisitos innecesarios que retrasan tu atención.',
+                  // Paragraph text — driven by current question's helpTextLong
+                  Text(
+                    _currentHelpTextLong,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

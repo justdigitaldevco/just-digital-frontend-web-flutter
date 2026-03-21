@@ -7,6 +7,7 @@ class Question {
   final String associatedFields;
   final String condition;
   final String helpText;
+  final String helpTextLong;
   final List<String> options;
   final List<String> validators;
   final String dependsOn;
@@ -20,6 +21,7 @@ class Question {
     required this.associatedFields,
     required this.condition,
     required this.helpText,
+    this.helpTextLong = "",
     this.options = const [],
     this.validators = const [],
     this.dependsOn = "",
@@ -37,6 +39,7 @@ class Question {
       'associatedFields': associatedFields,
       'condition': condition,
       'helpText': helpText,
+      'helpTextLong': helpTextLong,
       'answer': answer,
     };
   }
@@ -51,6 +54,10 @@ class Question {
       associatedFields: 'depto_tutela, ciudad_tutela',
       condition: '',
       helpText: 'En qué juzgado se va a presentar la tutela',
+      helpTextLong: """Escribe el departamento y la ciudad donde vives.
+Si tu problema ocurrió en otro lugar, escribe la ciudad donde te están negando el servicio de salud.
+
+Esta información es importante porque permite saber qué juez debe conocer tu caso."""
     ),
     Question(
       id: 'q1',
@@ -69,7 +76,7 @@ class Question {
       condition: 'tutela_para_quien = "Para un familiar que no puede hacerla por sí mismo"',
       helpText: '¿Cuál es tu nombre?',
       dependsOn: 'q1',
-      dependencyValue: AppConstants.paraMi
+      dependencyValue: AppConstants.paraOtraPersona
     ),
     Question(
       id: 'q3',
@@ -78,6 +85,8 @@ class Question {
       associatedFields: 'nombre_autor',
       condition: 'tutela_para_quien = "Para mí"',
       helpText: '¿Cuál es tu nombre?',
+      dependsOn: 'q1',
+      dependencyValue: AppConstants.paraMi
     ),
     Question(
       id: 'q4',
@@ -94,6 +103,7 @@ class Question {
       associatedFields: 'id_autor_depto, id_autor_ciudad',
       condition: '',
       helpText: '',
+      helpTextLong: """Esta información aparece en la parte de atrás de tu cédula de ciudadanía o documento de identidad. Si no la recuerdas, puedes revisar tu documento antes de continuar."""
     ),
     Question(
       id: 'q6',
@@ -120,6 +130,9 @@ class Question {
       associatedFields: 'telefono_autor',
       condition: 'tutela_para_quien = "Para mí"',
       helpText: '',
+      helpTextLong: """Escribe un número de celular o teléfono que utilices con frecuencia.
+
+Es posible que el juzgado o la entidad de salud se comuniquen contigo para darte información sobre tu caso.""",
         dependsOn: 'q1',
         dependencyValue: AppConstants.paraMi
     ),
@@ -130,6 +143,7 @@ class Question {
       associatedFields: 'correo_autor',
       condition: 'tutela_para_quien = "Para mí"',
       helpText: '',
+      helpTextLong: """Escribe un correo electrónico al que tengas acceso. Allí recibirás las notificaciones del juzgado, es decir, los mensajes donde te informarán qué está pasando con tu tutela.""",
         dependsOn: 'q1',
         dependencyValue: AppConstants.paraMi
     ),
@@ -182,6 +196,13 @@ class Question {
       associatedFields: 'regimen',
       condition: '',
       helpText: 'El régimen de la EPS',
+      helpTextLong: """Indica a qué régimen perteneces:
+
+Contributivo:
+Cuando la persona trabaja y paga aportes al sistema de salud, o cuando es beneficiaria de alguien que cotiza (por ejemplo, esposo, esposa o padres).
+
+Subsidiado:
+Cuando la persona no paga aportes y está afiliada a través del Sisbén u otro programa del Estado.""",
       options: ['Régimen contributivo', 'Régimen subsidiado']
     ),
     Question(
@@ -191,6 +212,8 @@ class Question {
       associatedFields: 'diagnostico',
       condition: '',
       helpText: '',
+      helpTextLong: """Indica qué enfermedad tiene la persona, qué tan grave es y qué tratamiento necesita.
+Esta información es necesaria para que el juez pueda evaluar si existe riesgo para la vida o la salud y decidir qué servicio médico debe ordenar."""
     ),
     Question(
       id: 'q16',
@@ -207,6 +230,7 @@ class Question {
       associatedFields: 'grupo_especial_si_no',
       condition: '',
       helpText: '',
+      helpTextLong: """Pertenecer a un grupo vulnerable significa que la persona tiene mayor riesgo de que sus derechos sean vulnerados, por su edad, discapacidad, embarazo, VIH, victimas del conflicto y otros."""
     ),
     Question(
       id: 'q18',
@@ -225,18 +249,23 @@ class Question {
     Question(
       id: 'q18', // Note: This ID is duplicated, you might want to change it
       question: '¿Tienes historia clínica?',
-      inputType: 'boolean',
+      inputType: 'yesOrNo',
       associatedFields: 'tiene_historia_clinica',
       condition: '',
       helpText: '',
+      helpTextLong: """Si la tienes, se recomenda adjuntar la historia clínica o algún documento médico. La historia clínica permite que el juez conozca el estado de salud del paciente, los exámenes realizados, los tratamientos ordenados y la evolución de la enfermedad."""
     ),
     Question(
       id: 'q19',
       question: '¿Tienes orden médica física o virtual?',
-      inputType: 'boolean',
+      inputType: 'yesOrNo',
       associatedFields: 'tienes_orden_medica',
       condition: '',
       helpText: '',
+      helpTextLong: """Adjunta la orden del médico donde se indique el examen, medicamento, tratamiento o procedimiento que necesitas.
+
+Este documento es muy importante porque demuestra que el servicio fue ordenado por un médico.
+Si no cuentas con una orden médica, es posible que el juez no pueda ordenar el servicio solicitado. Esto ayuda a que el juez entienda mejor la situación médica."""
     ),
   ];
 
@@ -281,6 +310,10 @@ List<Question> questionsTutela = [
     associatedFields: 'depto_tutela, ciudad_tutela',
     condition: '',
     helpText: 'En qué juzgado se va a presentar la tutela',
+    helpTextLong: """Escribe el departamento y la ciudad donde vives.
+Si tu problema ocurrió en otro lugar, escribe la ciudad donde te están negando el servicio de salud.
+
+Esta información es importante porque permite saber qué juez debe conocer tu caso."""
   ),
   Question(
       id: 'q1',
@@ -299,7 +332,7 @@ List<Question> questionsTutela = [
       condition: 'tutela_para_quien = "Para un familiar que no puede hacerla por sí mismo"',
       helpText: '¿Cuál es tu nombre?',
       dependsOn: 'q1',
-      dependencyValue: AppConstants.paraMi
+      dependencyValue: AppConstants.paraOtraPersona
   ),
   Question(
     id: 'q3',
@@ -308,6 +341,8 @@ List<Question> questionsTutela = [
     associatedFields: 'nombre_autor',
     condition: 'tutela_para_quien = "Para mí"',
     helpText: '¿Cuál es tu nombre?',
+    dependsOn: 'q1',
+    dependencyValue: AppConstants.paraMi
   ),
   Question(
     id: 'q4',
@@ -324,6 +359,7 @@ List<Question> questionsTutela = [
     associatedFields: 'id_autor_depto, id_autor_ciudad',
     condition: '',
     helpText: '',
+    helpTextLong: """Esta información aparece en la parte de atrás de tu cédula de ciudadanía o documento de identidad. Si no la recuerdas, puedes revisar tu documento antes de continuar."""
   ),
   Question(
     id: 'q6',
@@ -350,6 +386,9 @@ List<Question> questionsTutela = [
       associatedFields: 'telefono_autor',
       condition: 'tutela_para_quien = "Para mí"',
       helpText: '',
+      helpTextLong: """Escribe un número de celular o teléfono que utilices con frecuencia.
+
+Es posible que el juzgado o la entidad de salud se comuniquen contigo para darte información sobre tu caso.""",
       dependsOn: 'q1',
       dependencyValue: AppConstants.paraMi
   ),
@@ -360,6 +399,7 @@ List<Question> questionsTutela = [
       associatedFields: 'correo_autor',
       condition: 'tutela_para_quien = "Para mí"',
       helpText: '',
+      helpTextLong: """Escribe un correo electrónico al que tengas acceso. Allí recibirás las notificaciones del juzgado, es decir, los mensajes donde te informarán qué está pasando con tu tutela.""",
       dependsOn: 'q1',
       dependencyValue: AppConstants.paraMi
   ),
@@ -412,6 +452,13 @@ List<Question> questionsTutela = [
       associatedFields: 'regimen',
       condition: '',
       helpText: 'El régimen de la EPS',
+      helpTextLong: """Indica a qué régimen perteneces:
+
+Contributivo:
+Cuando la persona trabaja y paga aportes al sistema de salud, o cuando es beneficiaria de alguien que cotiza (por ejemplo, esposo, esposa o padres).
+
+Subsidiado:
+Cuando la persona no paga aportes y está afiliada a través del Sisbén u otro programa del Estado.""",
       options: ['Régimen contributivo', 'Régimen subsidiado']
   ),
   Question(
@@ -421,6 +468,8 @@ List<Question> questionsTutela = [
     associatedFields: 'diagnostico',
     condition: '',
     helpText: '',
+    helpTextLong: """Indica qué enfermedad tiene la persona, qué tan grave es y qué tratamiento necesita.
+Esta información es necesaria para que el juez pueda evaluar si existe riesgo para la vida o la salud y decidir qué servicio médico debe ordenar."""
   ),
   Question(
     id: 'q16',
@@ -437,6 +486,7 @@ List<Question> questionsTutela = [
     associatedFields: 'grupo_especial_si_no',
     condition: '',
     helpText: '',
+    helpTextLong: """Pertenecer a un grupo vulnerable significa que la persona tiene mayor riesgo de que sus derechos sean vulnerados, por su edad, discapacidad, embarazo, VIH, victimas del conflicto y otros."""
   ),
   Question(
       id: 'q18',
@@ -455,17 +505,22 @@ List<Question> questionsTutela = [
   Question(
     id: 'q18', // Note: This ID is duplicated, you might want to change it
     question: '¿Tienes historia clínica?',
-    inputType: 'boolean',
+    inputType: 'yesOrNo',
     associatedFields: 'tiene_historia_clinica',
     condition: '',
     helpText: '',
+    helpTextLong: """Si la tienes, se recomenda adjuntar la historia clínica o algún documento médico. La historia clínica permite que el juez conozca el estado de salud del paciente, los exámenes realizados, los tratamientos ordenados y la evolución de la enfermedad."""
   ),
   Question(
     id: 'q19',
     question: '¿Tienes orden médica física o virtual?',
-    inputType: 'boolean',
+    inputType: 'yesOrNo',
     associatedFields: 'tienes_orden_medica',
     condition: '',
     helpText: '',
+    helpTextLong: """Adjunta la orden del médico donde se indique el examen, medicamento, tratamiento o procedimiento que necesitas.
+
+Este documento es muy importante porque demuestra que el servicio fue ordenado por un médico.
+Si no cuentas con una orden médica, es posible que el juez no pueda ordenar el servicio solicitado. Esto ayuda a que el juez entienda mejor la situación médica."""
   ),
 ];
