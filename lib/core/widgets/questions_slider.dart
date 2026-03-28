@@ -1,6 +1,9 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import '../constants/questions.dart';
 import 'form_screen/city_selector_widget.dart';
+import 'package:justdigital_webapp/services/pdf_service.dart';
+import 'package:justdigital_webapp/services/web_download.dart';
 
 class QuestionSlider extends StatefulWidget {
   final List<Question> questions;
@@ -572,7 +575,25 @@ class ResultsScreen extends StatelessWidget {
 
             // New Continue Button
             ElevatedButton(
-              onPressed: _printAllQuestionsAndAnswers,
+              onPressed: () async {
+                try {
+                  final answersMap = PdfService.buildAnswersMap(questions);
+                  final bytes = await PdfService.generateFromAnswers(
+                    answersMap,
+                    'tutela',
+                    questions,
+                  );
+                  downloadFile(
+                    Uint8List.fromList(bytes),
+                    'tutela.pdf',
+                    'application/pdf',
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error al generar el documento: $e')),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
                 foregroundColor: Colors.white,

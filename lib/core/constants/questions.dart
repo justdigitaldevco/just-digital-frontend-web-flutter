@@ -105,6 +105,8 @@ Esta información es importante porque permite saber qué juez debe conocer tu c
       helpText: '',
       helpTextLong: """Esta información aparece en la parte de atrás de tu cédula de ciudadanía o documento de identidad. Si no la recuerdas, puedes revisar tu documento antes de continuar."""
     ),
+
+    /*
     Question(
       id: 'q6',
       question: 'Selecciona el departamento y ciudad donde resides actualmente',
@@ -113,6 +115,8 @@ Esta información es importante porque permite saber qué juez debe conocer tu c
       condition: '',
       helpText: '',
     ),
+
+     */
     Question(
       id: 'q7',
       question: 'Escribe tu edad',
@@ -361,14 +365,14 @@ Esta información es importante porque permite saber qué juez debe conocer tu c
     helpText: '',
     helpTextLong: """Esta información aparece en la parte de atrás de tu cédula de ciudadanía o documento de identidad. Si no la recuerdas, puedes revisar tu documento antes de continuar."""
   ),
-  Question(
-    id: 'q6',
-    question: 'Selecciona el departamento y ciudad donde resides actualmente',
-    inputType: 'cityDept',
-    associatedFields: 'id_autor_depto_res, id_autor_ciudad_res',
-    condition: '',
-    helpText: '',
-  ),
+  // Question(
+  //   id: 'q6',
+  //   question: 'Selecciona el departamento y ciudad donde resides actualmente',
+  //   inputType: 'cityDept',
+  //   associatedFields: 'id_autor_depto_res, id_autor_ciudad_res',
+  //   condition: '',
+  //   helpText: '',
+  // ),
   Question(
       id: 'q7',
       question: 'Escribe tu edad',

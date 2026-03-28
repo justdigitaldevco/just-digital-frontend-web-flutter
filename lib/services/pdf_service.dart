@@ -4,6 +4,37 @@ import 'package:justdigital_webapp/core/constants/questions.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class PdfService {
+
+  /// Convierte una lista de preguntas en el mapa de respuestas que usa [generateFromAnswers].
+  /// Maneja correctamente preguntas de tipo cityDept (que guardan "Departamento: X, Ciudad: Y").
+  static Map<String, dynamic> buildAnswersMap(List<Question> questionList) {
+    final Map<String, dynamic> answers = {};
+    for (final q in questionList) {
+      if (q.answer == null || q.answer!.isEmpty) continue;
+      if (q.inputType == 'cityDept') {
+        // Formato: "Departamento: X, Ciudad: Y"
+        final answer = q.answer!;
+        final deptMatch = RegExp(r'Departamento: (.+?), Ciudad: ').firstMatch(answer);
+        final cityMatch = RegExp(r'Ciudad: (.+)$').firstMatch(answer);
+        final dept = deptMatch?.group(1)?.trim() ?? '';
+        final city = cityMatch?.group(1)?.trim() ?? '';
+        final fields = q.associatedFields.split(',').map((f) => f.trim()).toList();
+        if (fields.length >= 2) {
+          answers[fields[0]] = dept;
+          answers[fields[1]] = city;
+        }
+      } else {
+        final fields = q.associatedFields.split(',').map((f) => f.trim()).toList();
+        for (final field in fields) {
+          if (field.isNotEmpty) {
+            answers[field] = q.answer;
+          }
+        }
+      }
+    }
+    return answers;
+  }
+
   static Future<List<int>> generateFromAnswers(
       Map<String, dynamic> answers,
       String templateKey,
@@ -44,21 +75,26 @@ class PdfService {
     final bool esTutelaParaAutor = answers['tutela_para_quien'] == 'Para mí';
     final fechaPresentacionTutela = answers['fecha_tutela'] == '';
     final diagnostico = answers['diagnostico'] ?? '';
-    final historiaClinica = answers["tiene_historia_clinica"]?? false;
-    final ordenMedica = answers["tiene_historia_clinica"] ?? false;
+    // Convertir "Sí"/"No" (yesOrNo) o "true"/"false" (boolean) a bool
+    final dynamic rawHistoria = answers["tiene_historia_clinica"];
+    final bool historiaClinica = rawHistoria == true || rawHistoria == 'Sí' || rawHistoria == 'true';
+    final dynamic rawOrden = answers["tienes_orden_medica"];
+    final bool ordenMedica = rawOrden == true || rawOrden == 'Sí' || rawOrden == 'true';
 
 
     //Aqui van las respuestas del autor
 
     String autorNombre = answers['nombre_autor'] ?? 'Nombre completo autor';
     String autorCedula = answers['id_autor'] ?? 'Número de cédula';
-    String autorResidenciaDepto = answers['id_autor_depto_res'] ?? 'depto de residencia del autor';
-    String autorResidenciaCiudad = answers['id_autor_ciudad_res'] ?? 'ciudad de residencia del autor';
+    String autorResidenciaDepto = answers['id_autor_depto_res'] ?? answers['depto_tutela'] ?? '';
+    String autorResidenciaCiudad = answers['id_autor_ciudad_res'] ?? answers['ciudad_tutela'] ?? '';
 
     //
 
     final eps = answers['eps'] ?? 'Nombre de la EPS';
-    final regimen = answers['regimen'].split(" ")[1].toLowerCase();
+    final regimenRaw = (answers['regimen'] as String?) ?? '';
+    final regimenParts = regimenRaw.split(' ');
+    final regimen = regimenParts.length > 1 ? regimenParts[1].toLowerCase() : regimenRaw.toLowerCase();
     final serviciosExigidos = answers['servicios_medicos_exigidos'] ?? '';
     final grupoEspecialAlQuePertenence = answers['grupo_especial'] ?? '';
 
@@ -89,8 +125,8 @@ class PdfService {
       afectadoCedula = answers['id_autor'] ?? 'Número de cédula';
       afectadoCedulaDepto = answers['id_autor_depto'] ?? 'depto de la cedula del autor';
       afectadoCedulaCiudad = answers['id_autor_ciudad'] ?? 'ciudad de la cedula del autor';
-      afectadoResidenciaDepto = answers['id_autor_depto_res'] ?? 'depto de residencia del autor';
-      afectadoResidenciaCiudad = answers['id_autor_ciudad_res'] ?? 'ciudad de residencia del autor';
+      afectadoResidenciaDepto = answers['id_autor_depto_res'] ?? answers['depto_tutela'] ?? '';
+      afectadoResidenciaCiudad = answers['id_autor_ciudad_res'] ?? answers['ciudad_tutela'] ?? '';
       edadAfectado = answers['edad_afectado'] ?? '99';
 
       if(diagnostico != ""){
@@ -178,10 +214,7 @@ class PdfService {
   }
 
   Map<String, String> processData(List<Question> questionList){
-
-    Map<String,String> answers  = <String,String>{};
-
-    return answers;
+    return buildAnswersMap(questionList).map((k, v) => MapEntry(k, v?.toString() ?? ''));
   }
 
 }
